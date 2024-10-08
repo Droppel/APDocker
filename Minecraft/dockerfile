@@ -1,0 +1,13 @@
+FROM alpine AS builder
+RUN apk add tar
+COPY APMCServer.tgz /APMCServer/APMCServer.tgz
+RUN mkdir /extracted
+RUN tar -xzvf /APMCServer/APMCServer.tgz -C /extracted
+
+FROM amazoncorretto:17-al2023-jdk
+
+COPY --from=builder /extracted /APMCServer
+COPY run.sh /run.sh
+COPY start.sh /start.sh
+
+ENTRYPOINT [ "/start.sh" ]
