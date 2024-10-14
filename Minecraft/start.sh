@@ -14,12 +14,12 @@ if [ ! "$(ls -A $datadir)" ]; then
     echo "Creating data dir at $datadir"
     mkdir $datadir
     chmod 777 $datadir
-    cp -r /APMCServer/* $datadir 
-    cp /run.sh $datadir/APMCServer/
+    cp -r /Server/* $datadir 
+    cp /run.sh $datadir/Server/
 fi
 
-echo -n "$APMC" > $datadir/APMCServer/APData/apmc.apmc
+echo -n "$APMC" > $datadir/Server/APData/apmc.apmc
 
-cd $datadir/APMCServer
+cd $datadir/Server
 
 ./run.sh

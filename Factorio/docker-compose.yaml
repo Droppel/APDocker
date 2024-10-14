@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  factorioap:
+    image: droppel/factorioap:hardest-2.0.10
+    ports:
+      - 34197:34197
+    environment:
+      - DATADIR=/data
+      - WHITELIST=["AlphaChannel","Droppel"]
+  

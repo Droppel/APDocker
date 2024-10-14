@@ -1,0 +1,26 @@
+FROM alpine AS builder
+RUN apk add tar xz
+COPY factorio_headless_x64_1.1.110.tar.xz /FactorioServer/factorio.tar.xz
+RUN mkdir /extracted
+RUN tar -xvf /FactorioServer/factorio.tar.xz -C /extracted
+
+COPY Archipelago_0.5.0_linux-x86_64.tar.gz /AP/Archipelago_0.5.0_linux-x86_64.tar.gz
+RUN mkdir /apextracted
+RUN tar -xvf /AP/Archipelago_0.5.0_linux-x86_64.tar.gz -C /apextracted
+
+FROM ubuntu
+
+# RUN apk --no-cache add ca-certificates wget
+# RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+# RUN wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk
+# RUN apk add glibc-2.28-r0.apk; exit 0
+COPY --from=builder /extracted /Server
+COPY --from=builder /apextracted /Archipelago
+COPY start.sh /start.sh
+COPY AP-75138461390615128602-P13-Factorio_0.5.0.zip /mods/AP-75138461390615128602-P13-Factorio_0.5.0.zip
+COPY DiscoScience_1.1.4.zip /mods/DiscoScience_1.1.4.zip
+COPY Rohlinheatagtmuf_Hdhaotaotfnllsape-atnsasri_1.101.3.zip /mods/Rohlinheatagtmuf_Hdhaotaotfnllsape-atnsasri_1.101.3.zip
+COPY server-settings.json /server-settings.json
+COPY host.yaml /host.yaml
+
+ENTRYPOINT [ "/start.sh" ]
